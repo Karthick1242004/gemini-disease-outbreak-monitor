@@ -27,8 +27,67 @@ Before you begin, ensure you have met the following requirements:
 
 ### Clone the Repository
 
-```bash
-git clone https://github.com/Karthick1242004/gemini-disease-outbreak-monitor
-
-
 ### Backend Setup
+
+- Navigate to the server directory:
+  ```bash
+  cd server
+- Create a .env file in the server directory and add your Google API key:
+- Run the server:
+  ```bash
+  node server.js
+### Frontend Setup
+
+- Navigate to the client directory:
+  ```bash
+  cd client
+- Install the dependencies:
+  ```bash
+  npm install
+- Run the React application
+   ```bash
+   npm run dev
+
+### Python Setup
+
+- Navigate to the python-algorithm directory
+  ```bash
+  cd python-algorithm
+- Ensure you have the necessary Python libraries installed
+  ```bash
+  pip install requests beautifulsoup4
+- Run the Python script to scrape WHO data and generate the don_content.json file
+
+
+### Project Structure
+
+disease-monitoring-system/
+├── client/
+│   ├── node_modules/
+│   ├── public/
+│   ├── src/
+│   │   ├── components/
+│   │   │   └── Gemini.jsx
+│   │   ├── App.jsx
+│   │   └── index.jsx
+│   ├── .eslintrc.cjs
+│   ├── .gitignore
+│   ├── index.html
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── README.md
+│   └── vite.config.js
+├── python-algorithm/
+│   ├── app.py
+│   └── link.csv
+├── server/
+│   ├── .env
+│   ├── .gitignore
+│   ├── chatHistory.json
+│   ├── server.js
+│   └── don_content.json
+├── README.md
+└── package.json
+
+
+
