@@ -13,9 +13,8 @@ app.use(express.json());
 const genAI = new GoogleGenerativeAI(process.env.API_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-// Function to read DON content from JSON file
 function readDonContent() {
-  const donContentFilePath = '../don_content.json'; // Ensure this path is correct
+  const donContentFilePath = '../don_content.json';
   if (fs.existsSync(donContentFilePath)) {
     const data = fs.readFileSync(donContentFilePath);
     return JSON.parse(data);
@@ -23,10 +22,8 @@ function readDonContent() {
   return { error: 'DON content not found' };
 }
 
-// Function to generate text using Gemini AI
 async function generateOutput(content) {
   try {
-    // Generate text using Gemini AI
     const chat = model.startChat({
       generationConfig: {
         maxOutputTokens: 100,
@@ -44,7 +41,6 @@ async function generateOutput(content) {
   }
 }
 
-// Route to fetch all IDs
 app.get('/ids', (req, res) => {
   const donContent = readDonContent();
 
@@ -56,7 +52,6 @@ app.get('/ids', (req, res) => {
   res.json({ ids });
 });
 
-// Route to generate output for a specific ID
 app.get('/generate-output/:id', async (req, res) => {
   try {
     const donContent = readDonContent();
@@ -72,10 +67,7 @@ app.get('/generate-output/:id', async (req, res) => {
     }
 
     const content = donContent[id].content;
-    // Generate output using Gemini AI
     const generatedOutput = await generateOutput(content);
-
-    // Send the generated output as response
     res.json({ id, output: generatedOutput });
   } catch (error) {
     console.error('Error:', error.message);
