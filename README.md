@@ -10,9 +10,6 @@ The Disease Monitoring System is a comprehensive project designed to scrape dise
 - [Installation](#installation)
 - [Usage](#usage)
 - [Project Structure](#project-structure)
-- [API Endpoints](#api-endpoints)
-- [Contributing](#contributing)
-- [License](#license)
 
 ## Prerequisites
 
