@@ -1,0 +1,89 @@
+@import url('https://fonts.googleapis.com/css2?family=Average+Sans&family=Grand+Hotel&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Average+Sans&family=Grand+Hotel&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Quicksand:wght@300&display=swap');
+
+.navicon {
+    background: transparent;
+    border: none;
+    color: #C9CCCE;
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: none; /* Initially hide the bar icon */
+}
+.nav{
+    display: flex;
+    justify-content: center;
+    margin-top: 3%;
+}
+.navb{
+    font-family: 'Poppins';
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    width: 90%;
+    height: 90px;
+    padding: 0% 6%;
+}
+.navb h1{
+    font-family:'Poppins';
+    font-size: 190%;
+    font-weight: 500;
+    background: linear-gradient(to right, #4083f8, #f34b67, #ff758c); /* Adjust the colors as needed */
+    -webkit-background-clip: text;
+    color: transparent;
+}
+.navb1{
+    margin-top: 1%;
+    display: flex;
+    flex-direction: row;
+    gap: 38%;
+    align-items: center;
+    justify-content: center;
+    padding-right: 4%;
+}
+.navic{
+    color: black;
+    font-size: 21px;
+}
+.lk{
+    font-size: 100%;
+    text-decoration: none;
+    color: #C9CCCE;
+    
+}
+@media screen and (max-width:756px) and (min-width: 250px){
+    .navb1{
+        display: flex;
+        flex-direction: column;
+        background-color: #1a1a1b;
+        width: 100%;
+        z-index: 999;
+        margin-top: 5%;
+        align-items: center;
+        padding-bottom: 20px;
+        border-radius: 4px;
+        padding-top: 5%;
+        padding-left: 4%;
+        font-weight: 600;
+    }
+    .lk{
+        padding-top: 10px;
+        justify-content: start;
+        font-weight: 300;
+        font-size: 13px;
+    }
+    .lk:hover{
+        color: rgb(145, 141, 141);
+    }
+    .navb{
+        width: 100%;
+    }
+    .nav{
+        padding: 0% 3%;
+    }
+}
+@media (max-width: 750px) {
+    .navicon {
+      display: block;
+    }
+  } 

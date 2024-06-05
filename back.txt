@@ -1,0 +1,197 @@
+server.js:
+
+const express = require('express');
+const cors = require('cors');
+const fs = require('fs');
+const { GoogleGenerativeAI } = require('@google/generative-ai');
+require('dotenv').config();
+
+const app = express();
+const port = process.env.PORT || 3001;
+
+app.use(cors());
+app.use(express.json());
+
+const genAI = new GoogleGenerativeAI(process.env.API_KEY);
+const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+// Function to read DON content from JSON file
+function readDonContent() {
+  const donContentFilePath = '../don_content.json'; // Ensure this path is correct
+  if (fs.existsSync(donContentFilePath)) {
+    const data = fs.readFileSync(donContentFilePath);
+    return JSON.parse(data);
+  }
+  return { error: 'DON content not found' };
+}
+
+// Function to generate text using Gemini AI
+async function generateOutput(content) {
+  try {
+    // Generate text using Gemini AI
+    const chat = model.startChat({
+      generationConfig: {
+        maxOutputTokens: 100,
+      },
+    });
+
+    const text = `${content}, give me the disease name from the provided content and also the number of victims of it`;
+    const result = await chat.sendMessage(text);
+    const response = await result.response;
+    const generatedOutput = await response.text();
+    return generatedOutput;
+  } catch (error) {
+    console.error('Error generating text:', error);
+    throw new Error('Failed to generate text');
+  }
+}
+
+// Route to generate output for all IDs
+app.get('/generate-output', async (req, res) => {
+  try {
+    // Read content from JSON file
+    const donContent = readDonContent();
+
+    if (donContent.error) {
+      return res.status(404).json(donContent);
+    }
+
+    const generatedOutputs = {};
+    for (const id in donContent) {
+      const content = donContent[id].content;
+      // Generate output using Gemini AI
+      const generatedOutput = await generateOutput(content);
+      generatedOutputs[id] = generatedOutput;
+    }
+
+    // Send the generated output as response
+    res.json(generatedOutputs);
+  } catch (error) {
+    console.error('Error:', error.message);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.listen(port, () => {
+  console.log(`Server running on http://localhost:${port}`);
+});
+
+
+
+
+
+
+
+
+
+Gemini.jsx:
+
+import { useState } from 'react';
+import axios from 'axios';
+
+function Gemini() {
+  const [output, setOutput] = useState({});
+  const [error, setError] = useState('');
+
+  const handleGenerate = async () => {
+    try {
+      const response = await axios.get('http://localhost:3001/generate-output');
+      setOutput(response.data);
+      setError('');
+    } catch (error) {
+      setError('Error generating output');
+      setOutput({});
+    }
+  };
+
+  return (
+    <div>
+      <button onClick={handleGenerate}>Generate</button>
+      {error && <p>{error}</p>}
+      {Object.keys(output).length > 0 && (
+        <div>
+          {Object.keys(output).map((id) => (
+            <div key={id}>
+              <h3>{id}</h3>
+              <p>{output[id]}</p>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default Gemini;
+
+
+
+
+App.py:
+
+import requests
+from bs4 import BeautifulSoup
+import json
+import os
+
+# Function to fetch the content from the given URL
+def get_don_content_text(url):
+    try:
+        # Send a GET request to the URL
+        response = requests.get(url)
+        response.raise_for_status()  # Raise an exception for HTTP errors
+
+        # Parse the content of the request with BeautifulSoup
+        soup = BeautifulSoup(response.content, 'html.parser')
+
+        # Find all div elements with class 'don-content'
+        don_content_divs = soup.find_all('div', class_='don-content')
+
+        # Extract and concatenate the text from each 'don-content' div
+        don_content_texts = [div.get_text(separator="\n", strip=True) for div in don_content_divs]
+        return "\n\n".join(don_content_texts)
+
+    except requests.exceptions.RequestException as e:
+        return f'Error fetching data: {e}'
+
+# Function to save data to JSON file with unique IDs for each link's content
+def save_to_json(data, filename):
+    try:
+        # Check if the file already exists
+        if os.path.exists(filename):
+            # Load existing data from the file
+            with open(filename, 'r') as file:
+                existing_data = json.load(file)
+        else:
+            # Initialize an empty dictionary if the file does not exist
+            existing_data = {}
+
+        # Determine the next ID based on existing keys
+        next_id = f'id{len(existing_data) + 1}'
+
+        # Add new data with the next ID
+        existing_data[next_id] = data
+
+        # Save the updated data back to the file
+        with open(filename, 'w') as file:
+            json.dump(existing_data, file, indent=4)
+        
+        print(f'Data successfully saved to {filename} as {next_id}')
+    except IOError as e:
+        print(f'Error saving data to {filename}: {e}')
+
+# URL of the WHO disease outbreak news page (example URL, can be changed)
+url = 'https://www.who.int/emergencies/disease-outbreak-news/item/2024-DON513'
+
+# Fetch all text content within 'don-content' divs
+don_content_text = get_don_content_text(url)
+
+# Prepare data to be stored in JSON format
+data = {
+    'url': url,
+    'content': don_content_text
+}
+
+# Save the data to a JSON file
+json_filename = 'don_content.json'
+save_to_json(data, json_filename)
