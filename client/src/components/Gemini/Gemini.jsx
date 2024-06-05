@@ -30,18 +30,16 @@ function Gemini() {
     for (let id of ids) {
       try {
         const url = `http://localhost:3001/generate-output/${id}`;
-        console.log('Requesting URL:', url); // Log the URL being requested
+        console.log('Requesting URL:', url);
         const response = await axios.get(url);
         const generatedOutput = response.data.output;
-
-        // Split the generated output by whitespace and extract the last element as the victim count
         const parts = generatedOutput.trim().split(/\s+/);
         const victimCount = parts.pop();
         const diseaseDetail = parts.join(' ');
 
         setOutput(prevOutput => [...prevOutput, { id, diseaseDetail, victimCount }]);
       } catch (error) {
-        console.error('Error fetching data:', error); // Log the error for debugging
+        console.error('Error fetching data:', error); 
         setError('Error generating output');
         setLoading(false);
         return;
