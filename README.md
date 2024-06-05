@@ -61,31 +61,30 @@ Before you begin, ensure you have met the following requirements:
 
 ### Project Structure
 
-disease-monitoring-system/
 ├── client/
-│   ├── node_modules/
-│   ├── public/
-│   ├── src/
-│   │   ├── components/
-│   │   │   └── Gemini.jsx
-│   │   ├── App.jsx
-│   │   └── index.jsx
-│   ├── .eslintrc.cjs
-│   ├── .gitignore
-│   ├── index.html
-│   ├── package-lock.json
-│   ├── package.json
-│   ├── README.md
-│   └── vite.config.js
+│ ├── node_modules/
+│ ├── public/
+│ ├── src/
+│ │ ├── components/
+│ │ │ └── Gemini.jsx
+│ │ ├── App.jsx
+│ │ └── index.jsx
+│ ├── .eslintrc.cjs
+│ ├── .gitignore
+│ ├── index.html
+│ ├── package-lock.json
+│ ├── package.json
+│ ├── README.md
+│ └── vite.config.js
 ├── python-algorithm/
-│   ├── app.py
-│   └── link.csv
+│ ├── app.py
+│ └── link.csv
 ├── server/
-│   ├── .env
-│   ├── .gitignore
-│   ├── chatHistory.json
-│   ├── server.js
-│   └── don_content.json
+│ ├── .env
+│ ├── .gitignore
+│ ├── chatHistory.json
+│ ├── server.js
+│ └── don_content.json
 ├── README.md
 └── package.json
 
